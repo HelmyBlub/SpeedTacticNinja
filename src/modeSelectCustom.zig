@@ -27,6 +27,7 @@ const CUSTOMIZE_OPTIONS = [_]CustomizeOption{
     .{ .name = "Time Additional Rounds", .tilePos = .{ .x = -4, .y = 1 }, .onChange = onChangeTimeForAdditionalRound, .setupVerticesForValue = setupVerticesTimeForAdditionalRound },
     .{ .name = "Min Enemy Start Level", .tilePos = .{ .x = -4, .y = 3 }, .onChange = onChangeMinEnemy, .setupVerticesForValue = setupVerticesMinEnemy },
     .{ .name = "Max Enemy Start Level", .tilePos = .{ .x = -4, .y = 5 }, .onChange = onChangeMaxEnemy, .setupVerticesForValue = setupVerticesMaxEnemy },
+    .{ .name = "Money", .tilePos = .{ .x = 4, .y = -5 }, .onChange = onChangeMoneyGain, .setupVerticesForValue = setupVerticesMoneyGain },
 };
 
 pub fn startModeCustom(state: *main.GameState) !void {
@@ -207,6 +208,19 @@ fn setupVerticesMaxEnemy(option: CustomizeOption, state: *main.GameState) anyerr
     try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.maxEnemyLevelStartCount, state);
 }
 
+fn onChangeMoneyGain(leftInput: bool, state: *main.GameState) void {
+    const config = &state.modeSelect.modeCustomData.config;
+    if (leftInput) {
+        config.moneyGainMultiply = @round(@max(config.moneyGainMultiply - 0.1, 0.2) * 10) / 10;
+    } else {
+        config.moneyGainMultiply = @round(@min(10, config.moneyGainMultiply + 0.1) * 10) / 10;
+    }
+}
+
+fn setupVerticesMoneyGain(option: CustomizeOption, state: *main.GameState) anyerror!void {
+    try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.moneyGainMultiply, state);
+}
+
 fn displayNumberAtOption(option: CustomizeOption, number: anytype, state: *main.GameState) !void {
     const textColor: [4]f32 = .{ 1, 1, 1, 1 };
     var fontSize: f32 = main.TILESIZE;
@@ -218,7 +232,7 @@ fn displayNumberAtOption(option: CustomizeOption, number: anytype, state: *main.
     const widthPerDigit: f32 = fontSize * 0.7;
     var totalWidth: f32 = 0;
     if (@TypeOf(number) == f32) {
-        totalWidth = widthPerDigit * @floor(1 + @log10(@max(1, @abs(number))));
+        totalWidth = widthPerDigit * @floor(3 + @log10(@max(1, @abs(number))));
     } else {
         const asFloat: f32 = @floatFromInt(number);
         totalWidth = widthPerDigit * @floor(1 + @log10(@max(1, @abs(asFloat))));

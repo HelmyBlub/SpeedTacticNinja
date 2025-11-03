@@ -113,6 +113,7 @@ pub const GameConfig = struct {
     playerImmunityFrames: i64 = 1000,
     maxEnemyLevelStartCount: u32 = 6,
     minEnemyLevelStartCount: u32 = 1,
+    moneyGainMultiply: f32 = 1.0,
 };
 
 pub const GameUxData = struct {
@@ -270,7 +271,7 @@ pub fn mainLoop(state: *GameState) !void {
                 if (state.gamePhase == .boss) {
                     state.lastBossDefeatedTime = state.gameTime;
                     for (state.players.items) |*player| {
-                        const amount = @as(i32, @intFromFloat(@as(f32, @floatFromInt(state.level)) * 10.0 * (1.0 + player.moneyBonusPerCent)));
+                        const amount = @as(i32, @intFromFloat(@as(f32, @floatFromInt(state.level)) * 10.0 * ((1.0 + player.moneyBonusPerCent) * state.config.moneyGainMultiply)));
                         try playerZig.changePlayerMoneyBy(amount, player, true, state);
                     }
                     if (state.uxData.achievementGainedLastSoundTime + 100 < state.gameTime) {
@@ -567,7 +568,8 @@ pub fn startNextRound(state: *GameState) !void {
     if (state.round > 1) {
         try soundMixerZig.playSound(&state.soundMixer, soundMixerZig.SOUND_ROUND_CLEARED, 0, 1);
         for (state.players.items) |*player| {
-            const amount = @as(i32, @intFromFloat(@ceil(@as(f32, @floatFromInt(state.level)) * (1.0 + player.moneyBonusPerCent))));
+            const amount = @as(i32, @intFromFloat(@ceil(@as(f32, @floatFromInt(state.level)) * ((1.0 + player.moneyBonusPerCent) * state.config.moneyGainMultiply))));
+
             try playerZig.changePlayerMoneyBy(amount, player, true, state);
         }
     }

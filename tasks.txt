@@ -4,9 +4,6 @@ testruns:
 
 Tasks:
 - mode: customized run
-    - random pieces modify
-        - more bends
-        - longer straights
     - speedrun stats
         -display it will not be saved, also for other cases
     - save custom runs?

@@ -194,7 +194,7 @@ pub fn destroyAndSave(state: *main.GameState) !void {
 }
 
 pub fn setupVertices(state: *main.GameState) !void {
-    if (state.modeSelect.selectedMode != .newGamePlus) return;
+    if (state.modeSelect.selectedMode != .newGamePlus and state.modeSelect.selectedMode != .custom) return;
     if (!state.statistics.uxData.display) return;
     if (state.level == 0) return;
     state.statistics.uxData.currentTimestamp = std.time.milliTimestamp();
@@ -208,22 +208,29 @@ pub fn setupVertices(state: *main.GameState) !void {
     const fontSize = state.statistics.uxData.fontSize;
     const vulkanFontSize = fontSize * onePixelYInVulkan;
     var columnOffsetX: f32 = 0;
-    if (state.statistics.currentRunStats.playerCount != 1) {
-        const playerCountWidth = fontVulkanZig.paintText("Stats for player count: ", .{
+    if (state.statistics.active) {
+        if (state.statistics.currentRunStats.playerCount != 1) {
+            const playerCountWidth = fontVulkanZig.paintText("Stats for player count: ", .{
+                .x = topLeft.x,
+                .y = topLeft.y - vulkanFontSize,
+            }, fontSize, textColor, state);
+            if (state.statistics.currentRunStats.playerCount == 0) {
+                _ = fontVulkanZig.paintText("Mixed", .{
+                    .x = topLeft.x + playerCountWidth,
+                    .y = topLeft.y - vulkanFontSize,
+                }, fontSize, textColor, state);
+            } else {
+                _ = try fontVulkanZig.paintNumber(state.statistics.currentRunStats.playerCount, .{
+                    .x = topLeft.x + playerCountWidth,
+                    .y = topLeft.y - vulkanFontSize,
+                }, fontSize, textColor, state);
+            }
+        }
+    } else {
+        _ = fontVulkanZig.paintText("Will not be saved", .{
             .x = topLeft.x,
             .y = topLeft.y - vulkanFontSize,
         }, fontSize, textColor, state);
-        if (state.statistics.currentRunStats.playerCount == 0) {
-            _ = fontVulkanZig.paintText("Mixed", .{
-                .x = topLeft.x + playerCountWidth,
-                .y = topLeft.y - vulkanFontSize,
-            }, fontSize, textColor, state);
-        } else {
-            _ = try fontVulkanZig.paintNumber(state.statistics.currentRunStats.playerCount, .{
-                .x = topLeft.x + playerCountWidth,
-                .y = topLeft.y - vulkanFontSize,
-            }, fontSize, textColor, state);
-        }
     }
     for (state.statistics.uxData.columnsData) |column| {
         if (!column.display) continue;

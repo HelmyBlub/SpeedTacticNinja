@@ -43,11 +43,13 @@ pub const GameEventData = struct {
 const GameEventType = enum {
     playerInput,
     freezeTime,
+    useContinue,
 };
 
 const GameEventTypeData = union(GameEventType) {
     playerInput: PlayerInputData,
     freezeTime: u32,
+    useContinue,
 };
 
 const PlayerInputData = struct {
@@ -141,10 +143,10 @@ pub fn tickReplayInputs(state: *main.GameState) !void {
     while (true) {
         const nextAction = state.autoTest.recording.runEventData.items[state.autoTest.replayRunInputsIndex];
         if (state.gameTime == nextAction.gameTime) {
+            state.autoTest.replayRunInputsIndex += 1;
             switch (nextAction.eventData) {
                 .playerInput => |data| {
                     try inputZig.handlePlayerAction(data.action, &state.players.items[data.playerIndex], state);
-                    state.autoTest.replayRunInputsIndex += 1;
                     if (state.autoTest.recording.runEventData.items.len <= state.autoTest.replayRunInputsIndex) {
                         state.autoTest.mode = .none;
                         if (state.soundMixer) |*soundMixer| soundMixer.volume = state.autoTest.tempSoundVolume;
@@ -152,9 +154,11 @@ pub fn tickReplayInputs(state: *main.GameState) !void {
                     }
                 },
                 .freezeTime => |data| {
-                    state.autoTest.replayRunInputsIndex += 1;
                     state.autoTest.replayFreezeTickCounter = data;
                     return;
+                },
+                .useContinue => {
+                    try main.executeContinue(state);
                 },
             }
         } else {

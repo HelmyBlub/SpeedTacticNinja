@@ -53,6 +53,7 @@ pub const CREDITS_TEXTS = [_][]const u8{
 
 pub const UPDATES_PER_SECOND = 200;
 pub const TICK_INTERVAL_MICRO_SECONDS = 1_000_000 / UPDATES_PER_SECOND;
+const TICK_INTERVAL_MS = TICK_INTERVAL_MICRO_SECONDS / 1000;
 pub const TILESIZE = 20;
 pub const GameState = struct {
     vkState: initVulkanZig.VkState = .{},
@@ -264,11 +265,10 @@ pub fn mainLoop(state: *GameState) !void {
     var lastTime = std.time.microTimestamp();
     var currentTime = lastTime;
     var tickTimeDiff: i64 = 0;
-    const tickIntervalMs = TICK_INTERVAL_MICRO_SECONDS / 1000;
     var currentFramesSkipped: u8 = 0;
     const maxFrameSkips = 4;
     while (!state.gameQuit) {
-        const passedTime: i64 = if (state.timeFreezed == null and !state.paused) tickIntervalMs else 0;
+        const passedTime: i64 = if (state.timeFreezed == null and !state.paused) TICK_INTERVAL_MS else 0;
         if (state.gamePhase != .modeSelect and (state.modeSelect.selectedMode == .newGamePlus or state.modeSelect.selectedMode == .practice or state.modeSelect.selectedMode == .custom)) {
             if (shouldEndLevel(state)) {
                 if (state.gamePhase == .boss) {
@@ -337,9 +337,9 @@ pub fn mainLoop(state: *GameState) !void {
             }
         }
         if (state.timeFreezed == null) {
-            if (!state.paused) state.gameTime += tickIntervalMs;
+            if (!state.paused) state.gameTime += TICK_INTERVAL_MS;
         } else {
-            state.timeFreezed.? += tickIntervalMs;
+            state.timeFreezed.? += TICK_INTERVAL_MS;
         }
     }
 }
@@ -769,6 +769,7 @@ pub fn runStart(state: *GameState, newGamePlus: u32) anyerror!void {
     state.continueData.freeContinues += state.config.additionalFreeContinues;
     state.uxData.achievementGained.clearRetainingCapacity();
     state.uxData.achievementGainedLastSoundTime = 0;
+    state.uxData.continueButtonHoldStart = null;
     if (newGamePlus == 0) state.continueData.freeContinues += 2;
     if (state.enemyData.movePieceEnemyMovePiece) |movePiece| {
         state.allocator.free(movePiece.steps);
@@ -907,6 +908,9 @@ pub fn destroyGameState(state: *GameState) void {
 
 pub fn executeContinue(state: *GameState) !void {
     if (state.level < 2) return;
+    if (state.autoTest.mode == .record) {
+        try state.autoTest.recording.runEventData.append(.{ .eventData = .useContinue, .gameTime = state.gameTime + TICK_INTERVAL_MS });
+    }
 
     const cost = getMoneyCostsForContinue(state);
     if (!hasEnoughMoney(cost, state)) return;

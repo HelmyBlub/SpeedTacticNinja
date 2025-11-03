@@ -206,6 +206,7 @@ pub fn startModeSelect(state: *main.GameState) !void {
     state.gamePhase = .modeSelect;
     state.modeSelect.selectedMode = .none;
     state.gameOver = false;
+    state.uxData.continueButtonHoldStart = null;
     mapTileZig.resetMapTiles(state.mapData.tiles);
     state.mapObjects.clearAndFree();
     bossZig.clearBosses(state);

@@ -3,11 +3,10 @@ testruns:
     -ngp2 to steam
 
 Tasks:
-- bug: delete last run
-    - sometimes he keeps the save file and loads again on game start
+- bug: replay does not work with "continue"
 - mode: customized run
     - save custom runs?
-- bug: replay does not work with "continue"
+        - if i do not save the run, display to player
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~ 59,7 (new test run)
@@ -15,9 +14,6 @@ Test Performance:
     test duration: 59638, gameTime: 2759470 ~45 (with times for best run)
 
 Next ideas:    
-- modifiers
-    - before game start set modifiers to make game easier or harder
-        - more start pieces
 - steam leaderboard?
 - can i make game start without steamapi dll?
 - script to prepare steam upload folder

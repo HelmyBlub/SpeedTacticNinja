@@ -4,13 +4,12 @@ testruns:
 
 Tasks:
 - mode: customized run
-    - more shop equipment options
+    - free continues
     - speedrun stats
         -display it will not be saved, also for other cases
     - random pieces modify
         - more bends
         - longer straights
-    - free continues
     - save custom runs?
 - bug: replay does not work with "continue"
 - bug: delete last run

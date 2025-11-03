@@ -115,6 +115,7 @@ pub const GameConfig = struct {
     minEnemyLevelStartCount: u32 = 1,
     moneyGainMultiply: f32 = 1.0,
     shopMinBuyOptions: u32 = 3,
+    additionalFreeContinues: u32 = 0,
 };
 
 pub const GameUxData = struct {
@@ -764,9 +765,10 @@ pub fn runStart(state: *GameState, newGamePlus: u32) anyerror!void {
     state.roundStartedTime = 0;
     state.lastBossDefeatedTime = 0;
     state.continueData = .{};
+    state.continueData.freeContinues += state.config.additionalFreeContinues;
     state.uxData.achievementGained.clearRetainingCapacity();
     state.uxData.achievementGainedLastSoundTime = 0;
-    if (newGamePlus == 0) state.continueData.freeContinues = 2;
+    if (newGamePlus == 0) state.continueData.freeContinues += 2;
     if (state.enemyData.movePieceEnemyMovePiece) |movePiece| {
         state.allocator.free(movePiece.steps);
         state.enemyData.movePieceEnemyMovePiece = null;

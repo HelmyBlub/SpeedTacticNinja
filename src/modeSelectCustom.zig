@@ -29,6 +29,7 @@ const CUSTOMIZE_OPTIONS = [_]CustomizeOption{
     .{ .name = "Max Enemy Start Level", .tilePos = .{ .x = -4, .y = 5 }, .onChange = onChangeMaxEnemy, .setupVerticesForValue = setupVerticesMaxEnemy },
     .{ .name = "Money", .tilePos = .{ .x = 4, .y = -5 }, .onChange = onChangeMoneyGain, .setupVerticesForValue = setupVerticesMoneyGain },
     .{ .name = "Shop Min Buy Options", .tilePos = .{ .x = 4, .y = -3 }, .onChange = onChangeShopMinBuyOptions, .setupVerticesForValue = setupVerticesShopMinBuyOptions },
+    .{ .name = "Free Continues", .tilePos = .{ .x = 4, .y = 3 }, .onChange = onChangeAddFreeContinues, .setupVerticesForValue = setupVerticesAddFreeContinues },
 };
 
 pub fn startModeCustom(state: *main.GameState) !void {
@@ -233,6 +234,19 @@ fn onChangeShopMinBuyOptions(leftInput: bool, state: *main.GameState) void {
 
 fn setupVerticesShopMinBuyOptions(option: CustomizeOption, state: *main.GameState) anyerror!void {
     try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.shopMinBuyOptions, state);
+}
+
+fn onChangeAddFreeContinues(leftInput: bool, state: *main.GameState) void {
+    const config = &state.modeSelect.modeCustomData.config;
+    if (leftInput) {
+        config.additionalFreeContinues = @max(config.additionalFreeContinues -| 1, 0);
+    } else {
+        config.additionalFreeContinues = @min(99, config.additionalFreeContinues + 1);
+    }
+}
+
+fn setupVerticesAddFreeContinues(option: CustomizeOption, state: *main.GameState) anyerror!void {
+    try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.additionalFreeContinues, state);
 }
 
 fn displayNumberAtOption(option: CustomizeOption, number: anytype, state: *main.GameState) !void {

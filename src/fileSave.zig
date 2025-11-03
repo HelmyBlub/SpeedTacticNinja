@@ -6,6 +6,7 @@ const inputZig = @import("input.zig");
 const equipmentZig = @import("equipment.zig");
 const movePieceZig = @import("movePiece.zig");
 const achievementZig = @import("achievement.zig");
+const modeSelectZig = @import("modeSelect.zig");
 
 const FILE_VERSION_SAVE_RUN: u8 = 0;
 const FILE_NAME_SAVE_RUN = "currenRun.dat";
@@ -163,6 +164,7 @@ pub fn loadCurrentRunFromFile(state: *main.GameState) !void {
         try readEquipmentSlotData(player, reader, state);
     }
     try readTimeStatsData(reader, state);
+    try readGameModeData(reader, state);
     try shopZig.startShoppingPhase(state, true);
     try readShopBuyOptions(reader, state);
     try readAchievementData(reader, state);
@@ -170,12 +172,12 @@ pub fn loadCurrentRunFromFile(state: *main.GameState) !void {
 
 pub fn saveCurrentRunToFile(state: *main.GameState) !void {
     if (state.autoTest.mode == .replay or state.autoTest.zigTest) return;
-    if (state.modeSelect.selectedMode == .newGamePlus and state.gameOver) try main.executeContinue(state);
-    if (state.modeSelect.selectedMode != .newGamePlus or state.gameOver or state.gamePhase == .finished or state.level <= 2) {
+    if ((state.modeSelect.selectedMode == .newGamePlus or state.modeSelect.selectedMode == .custom) and state.gameOver) try main.executeContinue(state);
+    if ((state.modeSelect.selectedMode != .newGamePlus and state.modeSelect.selectedMode != .custom) or state.gameOver or state.gamePhase == .finished or state.level <= 2) {
         deleteFile(FILE_NAME_SAVE_RUN, state.allocator) catch {};
         return;
     }
-    if (state.modeSelect.selectedMode != .newGamePlus) return;
+    if (state.modeSelect.selectedMode != .newGamePlus and state.modeSelect.selectedMode != .custom) return;
     const filepath = try getSavePath(state.allocator, FILE_NAME_SAVE_RUN);
     defer state.allocator.free(filepath);
 
@@ -211,8 +213,48 @@ pub fn saveCurrentRunToFile(state: *main.GameState) !void {
         try writeEquipmentSlotData(player.equipment.equipmentSlotsData.weapon, writer);
     }
     try writeTimeStatsData(writer, state);
+    try writeGameModeData(writer, state);
     try writeShopBuyOptions(writer, state);
     try writeAchievementData(writer, state);
+}
+
+///only for mode newGamePlus and custom
+fn writeGameModeData(writer: anytype, state: *main.GameState) !void {
+    const gameModeWriteValue: u8 = @as(u8, @intFromEnum(state.modeSelect.selectedMode));
+    try writer.writeInt(u8, gameModeWriteValue, .little);
+    if (state.modeSelect.selectedMode == .custom) {
+        const modeCustomDataConfig = state.modeSelect.modeCustomData.config;
+        try writer.writeInt(u32, modeCustomDataConfig.additionalFreeContinues, .little);
+        try writer.writeInt(i32, modeCustomDataConfig.bonusTimePerRoundFinished, .little);
+        try writer.writeInt(u32, modeCustomDataConfig.maxEnemyLevelStartCount, .little);
+        try writer.writeInt(u32, modeCustomDataConfig.minEnemyLevelStartCount, .little);
+        try writer.writeInt(i32, modeCustomDataConfig.minimalTimePerRequiredRounds, .little);
+        try writer.writeInt(u32, @bitCast(modeCustomDataConfig.moneyGainMultiply), .little);
+        try writer.writeInt(i64, modeCustomDataConfig.playerImmunityFrames, .little);
+        try writer.writeInt(u32, modeCustomDataConfig.playerMovePieceRandom, .little);
+        try writer.writeInt(usize, modeCustomDataConfig.roundToReachForNextLevel, .little);
+        try writer.writeInt(u32, modeCustomDataConfig.shopMinBuyOptions, .little);
+    }
+}
+
+///only for mode newGamePlus and custom
+fn readGameModeData(reader: anytype, state: *main.GameState) !void {
+    const modeEnumInt = try reader.readInt(u8, .little);
+    const mode: modeSelectZig.ModeEnum = try std.meta.intToEnum(modeSelectZig.ModeEnum, modeEnumInt);
+    if (mode == .custom) {
+        state.modeSelect.selectedMode = .custom;
+        const modeCustomDataConfig = &state.modeSelect.modeCustomData.config;
+        modeCustomDataConfig.additionalFreeContinues = try reader.readInt(u32, .little);
+        modeCustomDataConfig.bonusTimePerRoundFinished = try reader.readInt(i32, .little);
+        modeCustomDataConfig.maxEnemyLevelStartCount = try reader.readInt(u32, .little);
+        modeCustomDataConfig.minEnemyLevelStartCount = try reader.readInt(u32, .little);
+        modeCustomDataConfig.minimalTimePerRequiredRounds = try reader.readInt(i32, .little);
+        modeCustomDataConfig.moneyGainMultiply = @max(0.2, @min(10, @as(f32, @bitCast(try reader.readInt(u32, .little)))));
+        modeCustomDataConfig.playerImmunityFrames = try reader.readInt(i64, .little);
+        modeCustomDataConfig.playerMovePieceRandom = try reader.readInt(u32, .little);
+        modeCustomDataConfig.roundToReachForNextLevel = try reader.readInt(usize, .little);
+        modeCustomDataConfig.shopMinBuyOptions = try reader.readInt(u32, .little);
+    }
 }
 
 fn writeAchievementData(writer: anytype, state: *main.GameState) !void {

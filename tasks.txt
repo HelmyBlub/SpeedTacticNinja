@@ -3,7 +3,6 @@ testruns:
     -ngp2 to steam
 
 Tasks:
-- bug: replay does not work with "continue"
 - mode: customized run
     - save custom runs?
         - if i do not save the run, display to player

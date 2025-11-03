@@ -23,7 +23,7 @@ pub const ModeSelectData = struct {
     modeCustomData: modeSelectCustomZig.ModeCustomData = .{},
 };
 
-const ModeEnum = enum {
+pub const ModeEnum = enum {
     none,
     newGamePlus,
     practice,

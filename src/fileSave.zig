@@ -170,12 +170,12 @@ pub fn loadCurrentRunFromFile(state: *main.GameState) !void {
 
 pub fn saveCurrentRunToFile(state: *main.GameState) !void {
     if (state.autoTest.mode == .replay or state.autoTest.zigTest) return;
-    if (state.modeSelect.selectedMode != .newGamePlus) return;
-    if (state.gameOver) try main.executeContinue(state);
-    if (state.gameOver or state.gamePhase == .finished or state.level <= 2) {
+    if (state.modeSelect.selectedMode == .newGamePlus and state.gameOver) try main.executeContinue(state);
+    if (state.modeSelect.selectedMode != .newGamePlus or state.gameOver or state.gamePhase == .finished or state.level <= 2) {
         deleteFile(FILE_NAME_SAVE_RUN, state.allocator) catch {};
         return;
     }
+    if (state.modeSelect.selectedMode != .newGamePlus) return;
     const filepath = try getSavePath(state.allocator, FILE_NAME_SAVE_RUN);
     defer state.allocator.free(filepath);
 

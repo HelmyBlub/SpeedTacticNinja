@@ -272,7 +272,7 @@ pub fn setupEnemies(state: *main.GameState) !void {
     enemies.clearRetainingCapacity();
     if (state.enemyData.enemySpawnData.enemyEntries.items.len == 0) return;
     const rand = state.seededRandom.random();
-    const enemyCountForLevel = @min(state.config.maxEnemyLevelStartCount, (@divFloor(state.level - 1, 2) + state.newGamePlus));
+    const enemyCountForLevel = @min(state.config.maxEnemyLevelStartCount -| 1, (@divFloor(state.level - 1, 2) + state.newGamePlus));
     const enemyCount = @max((state.round + enemyCountForLevel) * state.players.items.len, state.config.minEnemyLevelStartCount);
     const mapTileRadiusWidth = mapTileZig.BASE_MAP_TILE_RADIUS + @as(u32, @intFromFloat(@sqrt(@as(f32, @floatFromInt(enemyCount)))));
     const mapTileRadiusHeight = mapTileRadiusWidth;

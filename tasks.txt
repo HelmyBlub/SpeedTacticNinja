@@ -1,15 +1,18 @@
 testruns:
 - gain achievements on steam
-    - newGame+2
-        - practice harder bosses
-    - remember to connect to steam
+    -ngp2 to steam
 
 Tasks:
 - mode: customized run
     - gain more/less money
-    - more start pieces
-    - max start enemies
-    - speedrun stats, but display it will not be saved
+    - more shop equipment options
+    - speedrun stats
+        -display it will not be saved, also for other cases
+    - random pieces modify
+        - more bends
+        - longer straights
+    - free continues
+- bug: replay does not work with "continue"
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~ 59,7 (new test run)
@@ -19,11 +22,8 @@ Test Performance:
 Next ideas:    
 - modifiers
     - before game start set modifiers to make game easier or harder
-        - gain more/less money
-        - more time/less
         - more start pieces
-        - round requirment for continue to next level
-        - max start enemies
 - steam leaderboard?
 - can i make game start without steamapi dll?
 - script to prepare steam upload folder
+- more automated testing?

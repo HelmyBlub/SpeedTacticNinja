@@ -111,7 +111,7 @@ pub const GameConfig = struct {
     bonusTimePerRoundFinished: i32 = 5000,
     minimalTimePerRequiredRounds: i32 = 60_000,
     playerImmunityFrames: i64 = 1000,
-    maxEnemyLevelStartCount: u32 = 5,
+    maxEnemyLevelStartCount: u32 = 6,
     minEnemyLevelStartCount: u32 = 1,
 };
 

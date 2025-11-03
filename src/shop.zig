@@ -372,7 +372,7 @@ pub fn randomizeShop(state: *main.GameState) !void {
     for (state.players.items) |*player| {
         var pieceToBuyIndex: usize = 0;
         toBuy: while (pieceToBuyIndex < player.shop.piecesToBuy.len) {
-            const randomPiece = try movePieceZig.createRandomMovePiece(state.allocator, state);
+            const randomPiece = try movePieceZig.createRandomMovePiecePlayer(state.allocator, state);
             for (player.shop.piecesToBuy) |otherPiece| {
                 if (otherPiece != null and movePieceZig.areSameMovePieces(randomPiece, otherPiece.?)) {
                     state.allocator.free(randomPiece.steps);
@@ -549,7 +549,7 @@ pub fn executePay(player: *playerZig.Player, state: *main.GameState) !void {
                     var isDifferentPiece = false;
                     while (!isDifferentPiece) {
                         isDifferentPiece = true;
-                        const newBuyPiece = try movePieceZig.createRandomMovePiece(state.allocator, state);
+                        const newBuyPiece = try movePieceZig.createRandomMovePiecePlayer(state.allocator, state);
                         for (player.shop.piecesToBuy) |pieceToBuy| {
                             if (pieceToBuy) |piece| {
                                 if (movePieceZig.areSameMovePieces(piece, newBuyPiece)) {

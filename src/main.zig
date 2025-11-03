@@ -116,6 +116,7 @@ pub const GameConfig = struct {
     moneyGainMultiply: f32 = 1.0,
     shopMinBuyOptions: u32 = 3,
     additionalFreeContinues: u32 = 0,
+    playerMovePieceRandom: u32 = 3,
 };
 
 pub const GameUxData = struct {

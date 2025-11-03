@@ -4,12 +4,11 @@ testruns:
 
 Tasks:
 - mode: customized run
-    - free continues
-    - speedrun stats
-        -display it will not be saved, also for other cases
     - random pieces modify
         - more bends
         - longer straights
+    - speedrun stats
+        -display it will not be saved, also for other cases
     - save custom runs?
 - bug: replay does not work with "continue"
 - bug: delete last run

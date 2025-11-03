@@ -309,7 +309,7 @@ pub fn tick(state: *main.GameState) !void {
             if (state.enemyData.enemies.items.len == 0) {
                 if (@mod(state.round, 2) == 0) {
                     for (state.players.items) |*player| {
-                        const movePiece = try movePieceZig.createRandomMovePiece(state.allocator, state);
+                        const movePiece = try movePieceZig.createRandomMovePiecePlayer(state.allocator, state);
                         try movePieceZig.addMovePiece(player, movePiece);
                     }
                 }

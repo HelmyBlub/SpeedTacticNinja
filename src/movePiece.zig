@@ -81,7 +81,7 @@ pub fn setupMovePieces(player: *playerZig.Player, state: *main.GameState) !void 
         player.availableMovePieces.clearRetainingCapacity();
         player.moveOptions.clearRetainingCapacity();
         total: while (player.totalMovePieces.items.len < 7) {
-            const randomPiece = try createRandomMovePiece(state.allocator, state);
+            const randomPiece = try createRandomMovePiecePlayer(state.allocator, state);
             for (player.totalMovePieces.items) |otherPiece| {
                 if (areSameMovePieces(randomPiece, otherPiece)) {
                     state.allocator.free(randomPiece.steps);
@@ -669,14 +669,22 @@ pub fn replaceMovePiece(totalIndex: usize, newPiece: MovePiece, player: *playerZ
     allocator.free(removedPiece.steps);
 }
 
+pub fn createRandomMovePiecePlayer(allocator: std.mem.Allocator, state: *main.GameState) !MovePiece {
+    return createRandomMovePieceStepsLength(allocator, state.config.playerMovePieceRandom, state.config.playerMovePieceRandom, state);
+}
+
 pub fn createRandomMovePiece(allocator: std.mem.Allocator, state: *main.GameState) !MovePiece {
-    const stepsLength: usize = @intFromFloat(state.seededRandom.random().float(f32) * 3.0 + 1);
+    return createRandomMovePieceStepsLength(allocator, 3, 3, state);
+}
+
+fn createRandomMovePieceStepsLength(allocator: std.mem.Allocator, maxSteps: u32, maxStepLength: u32, state: *main.GameState) !MovePiece {
+    const stepsLength: usize = @intFromFloat(state.seededRandom.random().float(f32) * @as(f32, @floatFromInt(maxSteps)) + 1);
     const steps: []MoveStep = try allocator.alloc(MoveStep, stepsLength);
     const movePiece: MovePiece = .{ .steps = steps };
     var currDirection: u8 = DIRECTION_UP;
     for (movePiece.steps) |*step| {
         step.direction = currDirection;
-        step.stepCount = @as(u8, @intFromFloat(state.seededRandom.random().float(f32) * 3.0)) + 1;
+        step.stepCount = @as(u8, @intFromFloat(state.seededRandom.random().float(f32) * @as(f32, @floatFromInt(maxStepLength)))) + 1;
         currDirection = @mod(currDirection + (@as(u8, @intFromFloat(state.seededRandom.random().float(f32) * 2.0)) * 2 + 1), 4);
     }
     return movePiece;

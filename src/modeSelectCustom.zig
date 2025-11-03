@@ -30,6 +30,7 @@ const CUSTOMIZE_OPTIONS = [_]CustomizeOption{
     .{ .name = "Money", .tilePos = .{ .x = 4, .y = -5 }, .onChange = onChangeMoneyGain, .setupVerticesForValue = setupVerticesMoneyGain },
     .{ .name = "Shop Min Buy Options", .tilePos = .{ .x = 4, .y = -3 }, .onChange = onChangeShopMinBuyOptions, .setupVerticesForValue = setupVerticesShopMinBuyOptions },
     .{ .name = "Free Continues", .tilePos = .{ .x = 4, .y = 3 }, .onChange = onChangeAddFreeContinues, .setupVerticesForValue = setupVerticesAddFreeContinues },
+    .{ .name = "Move Piece Randomness", .tilePos = .{ .x = 4, .y = 5 }, .onChange = onChangeMovePieceRandomness, .setupVerticesForValue = setupVerticesMovePieceRandomness },
 };
 
 pub fn startModeCustom(state: *main.GameState) !void {
@@ -247,6 +248,19 @@ fn onChangeAddFreeContinues(leftInput: bool, state: *main.GameState) void {
 
 fn setupVerticesAddFreeContinues(option: CustomizeOption, state: *main.GameState) anyerror!void {
     try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.additionalFreeContinues, state);
+}
+
+fn onChangeMovePieceRandomness(leftInput: bool, state: *main.GameState) void {
+    const config = &state.modeSelect.modeCustomData.config;
+    if (leftInput) {
+        config.playerMovePieceRandom = @max(config.playerMovePieceRandom -| 1, 3);
+    } else {
+        config.playerMovePieceRandom = @min(6, config.playerMovePieceRandom + 1);
+    }
+}
+
+fn setupVerticesMovePieceRandomness(option: CustomizeOption, state: *main.GameState) anyerror!void {
+    try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.playerMovePieceRandom, state);
 }
 
 fn displayNumberAtOption(option: CustomizeOption, number: anytype, state: *main.GameState) !void {

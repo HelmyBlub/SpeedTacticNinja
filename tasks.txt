@@ -4,7 +4,6 @@ testruns:
 
 Tasks:
 - mode: customized run
-    - gain more/less money
     - more shop equipment options
     - speedrun stats
         -display it will not be saved, also for other cases
@@ -12,7 +11,10 @@ Tasks:
         - more bends
         - longer straights
     - free continues
+    - save custom runs?
 - bug: replay does not work with "continue"
+- bug: delete last run
+    - sometimes he keeps the save file and loads again on game start
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~ 59,7 (new test run)

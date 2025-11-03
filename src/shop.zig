@@ -384,7 +384,7 @@ pub fn randomizeShop(state: *main.GameState) !void {
         }
     }
 
-    const maxShopOptions: usize = 2 + state.players.items.len;
+    const maxShopOptions: usize = @max(2 + state.players.items.len, state.config.shopMinBuyOptions);
     try randomizeBuyableEquipment(maxShopOptions, state);
 }
 

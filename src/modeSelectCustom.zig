@@ -28,6 +28,7 @@ const CUSTOMIZE_OPTIONS = [_]CustomizeOption{
     .{ .name = "Min Enemy Start Level", .tilePos = .{ .x = -4, .y = 3 }, .onChange = onChangeMinEnemy, .setupVerticesForValue = setupVerticesMinEnemy },
     .{ .name = "Max Enemy Start Level", .tilePos = .{ .x = -4, .y = 5 }, .onChange = onChangeMaxEnemy, .setupVerticesForValue = setupVerticesMaxEnemy },
     .{ .name = "Money", .tilePos = .{ .x = 4, .y = -5 }, .onChange = onChangeMoneyGain, .setupVerticesForValue = setupVerticesMoneyGain },
+    .{ .name = "Shop Min Buy Options", .tilePos = .{ .x = 4, .y = -3 }, .onChange = onChangeShopMinBuyOptions, .setupVerticesForValue = setupVerticesShopMinBuyOptions },
 };
 
 pub fn startModeCustom(state: *main.GameState) !void {
@@ -219,6 +220,19 @@ fn onChangeMoneyGain(leftInput: bool, state: *main.GameState) void {
 
 fn setupVerticesMoneyGain(option: CustomizeOption, state: *main.GameState) anyerror!void {
     try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.moneyGainMultiply, state);
+}
+
+fn onChangeShopMinBuyOptions(leftInput: bool, state: *main.GameState) void {
+    const config = &state.modeSelect.modeCustomData.config;
+    if (leftInput) {
+        config.shopMinBuyOptions = @max(config.shopMinBuyOptions - 1, 3);
+    } else {
+        config.shopMinBuyOptions = @min(6, config.shopMinBuyOptions + 1);
+    }
+}
+
+fn setupVerticesShopMinBuyOptions(option: CustomizeOption, state: *main.GameState) anyerror!void {
+    try displayNumberAtOption(option, state.modeSelect.modeCustomData.config.shopMinBuyOptions, state);
 }
 
 fn displayNumberAtOption(option: CustomizeOption, number: anytype, state: *main.GameState) !void {

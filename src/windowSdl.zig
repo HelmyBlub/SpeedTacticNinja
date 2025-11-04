@@ -14,6 +14,7 @@ const settingsMenuVulkanZig = @import("vulkan/settingsMenuVulkan.zig");
 const achievementZig = @import("achievement.zig");
 const autoTestZig = @import("autoTest.zig");
 const modeSelectZig = @import("modeSelect.zig");
+const movePieceZig = @import("movePiece.zig");
 
 pub const WindowData = struct {
     window: ?*sdl.SDL_Window = null,
@@ -152,16 +153,16 @@ fn handleGamePadEvents(event: sdl.SDL_Event, state: *main.GameState) !void {
 
 fn debugKeys(event: sdl.SDL_Event, state: *main.GameState) !void {
     if (event.key.scancode == sdl.SDL_SCANCODE_F5) {
+        state.statistics.active = false;
+        achievementZig.stopTrackingAchievmentForThisRun(state);
         try state.uxData.achievementGained.append(.{ .imageIndex = 0, .name = "test", .displayStartTime = state.gameTime });
     } else if (event.key.scancode == sdl.SDL_SCANCODE_F6) {
         state.statistics.active = false;
         achievementZig.stopTrackingAchievmentForThisRun(state);
         state.continueData.freeContinues += 1;
     } else if (event.key.scancode == sdl.SDL_SCANCODE_F7) {
-        if (state.highestNewGameDifficultyBeaten < 1) {
-            state.highestNewGameDifficultyBeaten = 1;
-            state.highestLevelBeaten = 0;
-        }
+        const randomPiece = try movePieceZig.createRandomMovePieceStepsLength(state.allocator, 1, 3, state);
+        try movePieceZig.addMovePiece(&state.players.items[0], randomPiece);
     } else if (event.key.scancode == sdl.SDL_SCANCODE_F8) {
         state.statistics.active = false;
         achievementZig.stopTrackingAchievmentForThisRun(state);

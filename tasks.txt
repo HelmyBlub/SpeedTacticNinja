@@ -5,7 +5,7 @@ testruns:
 Tasks:
 - mode: customized run
     - save custom runs?
-        - if i do not save the run, display to player
+        - continue: somehow does not start run correctly but values seems to be loaded
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~ 59,7 (new test run)

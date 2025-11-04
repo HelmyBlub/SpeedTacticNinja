@@ -677,7 +677,7 @@ pub fn createRandomMovePiece(allocator: std.mem.Allocator, state: *main.GameStat
     return createRandomMovePieceStepsLength(allocator, 3, 3, state);
 }
 
-fn createRandomMovePieceStepsLength(allocator: std.mem.Allocator, maxSteps: u32, maxStepLength: u32, state: *main.GameState) !MovePiece {
+pub fn createRandomMovePieceStepsLength(allocator: std.mem.Allocator, maxSteps: u32, maxStepLength: u32, state: *main.GameState) !MovePiece {
     const stepsLength: usize = @intFromFloat(state.seededRandom.random().float(f32) * @as(f32, @floatFromInt(maxSteps)) + 1);
     const steps: []MoveStep = try allocator.alloc(MoveStep, stepsLength);
     const movePiece: MovePiece = .{ .steps = steps };

@@ -254,6 +254,7 @@ fn readGameModeData(reader: anytype, state: *main.GameState) !void {
         modeCustomDataConfig.playerMovePieceRandom = try reader.readInt(u32, .little);
         modeCustomDataConfig.roundToReachForNextLevel = try reader.readInt(usize, .little);
         modeCustomDataConfig.shopMinBuyOptions = try reader.readInt(u32, .little);
+        state.config = modeCustomDataConfig.*;
     }
 }
 

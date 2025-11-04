@@ -13,7 +13,9 @@ work in progress
 - linux build
   - `zig build -Dtarget=x86_64-linux-gnu`
   - Make executable: `chmod +x speedTacticNinja`
-  - Link Steam Lib: `export LD_LIBRARY_PATH=/lib:/usr/lib:/home/helmi/speedTacticNinjaBuild`
+  - (optional) steam api linux lib for steam connection
+    - find on the internet "libsteam_api.so" place into folder
+    - link lib: `export LD_LIBRARY_PATH=/lib:/usr/lib:/home/helmi/speedTacticNinjaBuild`
 
 
 ### steam upload

@@ -2,11 +2,9 @@ testruns:
 - speed run max
 
 Tasks:
-- can i make game start without steamapi dll?
-    - dynamic loading
-        - windows
-        - linux
-            on steam
+- dynamic steam lib loading
+    - linux
+        test on linux laptop with steam
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~ 59,7 (new test run)
@@ -17,6 +15,7 @@ Next ideas:
 - steam leaderboard?
 - script to prepare steam upload folder
 - more automated testing?
+- check readme
 
 - steam build without debug mode
     - check steam active

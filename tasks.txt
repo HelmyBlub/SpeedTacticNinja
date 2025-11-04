@@ -1,11 +1,12 @@
 testruns:
-- gain achievements on steam
-    -ngp2 to steam
+- speed run max
 
 Tasks:
-- mode: customized run
-    - save custom runs?
-        - continue: somehow does not start run correctly but values seems to be loaded
+- can i make game start without steamapi dll?
+    - dynamic loading
+        - windows
+        - linux
+            on steam
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~ 59,7 (new test run)
@@ -14,6 +15,10 @@ Test Performance:
 
 Next ideas:    
 - steam leaderboard?
-- can i make game start without steamapi dll?
 - script to prepare steam upload folder
 - more automated testing?
+
+- steam build without debug mode
+    - check steam active
+    - check validation layer disabled
+    - check debug keys not working

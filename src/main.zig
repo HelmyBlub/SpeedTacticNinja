@@ -904,6 +904,7 @@ pub fn destroyGameState(state: *GameState) void {
     mapTileZig.deinit(state);
     enemyZig.destroyEnemyData(state);
     modeSelectZig.destroyModeSelectData(state);
+    steamZig.unloadGameDll();
 }
 
 pub fn executeContinue(state: *GameState) !void {

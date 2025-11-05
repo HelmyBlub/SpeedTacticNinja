@@ -222,7 +222,6 @@ const UiElementSliderData = struct {
 };
 
 pub fn setupUiLocations(state: *main.GameState) void {
-    std.debug.print("config: {s}\n{s}\n", .{ config.gitCommitCount, config.gitHash });
     const onePixelXInVulkan = state.windowData.onePixelXInVulkan;
     const onePixelYInVulkan = state.windowData.onePixelYInVulkan;
     const settingsMenuUx = &state.uxData.settingsMenuUx;

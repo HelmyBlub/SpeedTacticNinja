@@ -103,7 +103,7 @@ pub fn statsOnLevelShopFinishedAndNextLevelStart(state: *main.GameState) !void {
 pub fn statsSaveOnRestart(state: *main.GameState) !void {
     state.statistics.runStartedTime = std.time.milliTimestamp();
     state.statistics.totalShoppingTime = 0;
-    if (!state.statistics.active) {
+    if (!state.statistics.active or state.modeSelect.selectedMode != .newGamePlus) {
         state.statistics.active = true;
         return;
     }
@@ -112,7 +112,6 @@ pub fn statsSaveOnRestart(state: *main.GameState) !void {
     const currentRunStats = &state.statistics.currentRunStats;
     var saveToFile = false;
     const isNewBestTotalTime = checkIfIsNewBestTotalTime(bestRunStats, state);
-
     for (bestRunStats, 0..) |*bestRunLevelData, index| {
         const levelBeat: u8 = if (state.gamePhase == .shopping or state.gamePhase == .finished) 1 else 0;
         if (state.level - 1 + levelBeat <= index) break;

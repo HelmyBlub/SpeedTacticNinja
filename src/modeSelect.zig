@@ -198,7 +198,7 @@ pub fn onPlayerMoveActionFinished(player: *playerZig.Player, state: *main.GameSt
 }
 
 pub fn startModeSelect(state: *main.GameState) !void {
-    if (!state.autoTest.zigTest and (state.gameOver or state.gamePhase == .finished)) try statsZig.statsSaveOnRestart(state);
+    if (!state.autoTest.zigTest) try statsZig.statsSaveOnRestart(state);
     state.uxData.achievementGained.clearRetainingCapacity();
     state.paused = false;
     state.suddenDeath = 0;

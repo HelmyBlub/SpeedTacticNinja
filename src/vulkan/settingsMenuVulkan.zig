@@ -560,6 +560,7 @@ pub fn mouseDown(state: *main.GameState) !void {
                 if (main.isPositionInRectangle(vulkanMousePos, interactBox)) {
                     data.valuePerCent = @min(@max(0, @as(f32, @floatCast(vulkanMousePos.x - data.recDragArea.pos.x)) / data.recDragArea.width), 1);
                     data.holding = true;
+                    if (data.onChange) |onChange| try onChange(data.valuePerCent, element, state);
                     setupUiLocations(state);
                     return;
                 }

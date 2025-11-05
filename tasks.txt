@@ -6,7 +6,6 @@ testruns:
 
 Tasks:
 - test game start with broken dat files
-- when steam achievment reset but game not, should i get the achievement?
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~59,7 (new test run)

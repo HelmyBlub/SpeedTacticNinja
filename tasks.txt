@@ -5,7 +5,10 @@ testruns:
 - test achievement again, because of logic change
 
 Tasks:
-- test game start with broken dat files
+- script to prepare steam upload folder
+- version?
+    - display in settings menu
+
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~59,7 (new test run)
@@ -14,7 +17,6 @@ Test Performance:
 
 Next ideas:    
 - steam leaderboard?
-- script to prepare steam upload folder
 - more automated testing?
 - check readme
 

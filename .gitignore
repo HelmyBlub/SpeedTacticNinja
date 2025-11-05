@@ -11,6 +11,7 @@ savedRun.json
 
 # required for build. Not committed in repo. Used version steam sdk version 162.
 *steam_api64.dll
+*libsteam_api.so
 
 # required for testing with steam api
 steam_appid.txt

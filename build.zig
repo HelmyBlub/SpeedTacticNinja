@@ -75,10 +75,10 @@ fn addExecutable(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.
         }
         install_step.dest_dir = .{ .custom = "steam/windows" };
         // this just adds the dll file to zig-out/bin dir
-        b.getInstallStep().dependOn(&b.addInstallFileWithDir(b.path("dependencies/steam_api64.dll"), .{ .custom = "steam/windows" }, "steam_api64.dll").step);
+        install_step.step.dependOn(&b.addInstallFileWithDir(b.path("dependencies/steam_api64.dll"), .{ .custom = "steam/windows" }, "steam_api64.dll").step);
     } else {
         install_step.dest_dir = .{ .custom = "steam/linux" };
-        b.getInstallStep().dependOn(&b.addInstallFileWithDir(b.path("dependencies/libsteam_api.so"), .{ .custom = "steam/linux" }, "libsteam_api.so").step);
+        install_step.step.dependOn(&b.addInstallFileWithDir(b.path("dependencies/libsteam_api.so"), .{ .custom = "steam/linux" }, "libsteam_api.so").step);
     }
     if (!skipInstall) b.getInstallStep().dependOn(&install_step.step);
     exe.root_module.linkLibrary(sdl_lib);

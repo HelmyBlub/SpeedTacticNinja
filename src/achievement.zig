@@ -69,26 +69,26 @@ pub const ACHIEVEMENTS = std.EnumArray(AchievementsEnum, AchievementData).init(.
 });
 
 pub fn initAchievementsOnRestart(state: *main.GameState) void {
-    if (!state.achievements.get(.beatFirstEnemy).achieved) state.achievements.getPtr(.beatFirstEnemy).trackingActive = true;
-    if (!state.achievements.get(.beatBoss1).achieved) state.achievements.getPtr(.beatBoss1).trackingActive = true;
-    if (!state.achievements.get(.beatBoss2).achieved) state.achievements.getPtr(.beatBoss2).trackingActive = true;
-    if (!state.achievements.get(.beatBoss3).achieved) state.achievements.getPtr(.beatBoss3).trackingActive = true;
-    if (!state.achievements.get(.beatBoss4).achieved) state.achievements.getPtr(.beatBoss4).trackingActive = true;
-    if (!state.achievements.get(.beatBoss5).achieved) state.achievements.getPtr(.beatBoss5).trackingActive = true;
-    if (!state.achievements.get(.beatBoss6).achieved) state.achievements.getPtr(.beatBoss6).trackingActive = true;
-    if (!state.achievements.get(.beatBoss7).achieved) state.achievements.getPtr(.beatBoss7).trackingActive = true;
-    if (!state.achievements.get(.beatBoss8).achieved) state.achievements.getPtr(.beatBoss8).trackingActive = true;
-    if (!state.achievements.get(.beatBoss9).achieved) state.achievements.getPtr(.beatBoss9).trackingActive = true;
-    if (!state.achievements.get(.beatGame).achieved) state.achievements.getPtr(.beatGame).trackingActive = true;
+    state.achievements.getPtr(.beatFirstEnemy).trackingActive = true;
+    state.achievements.getPtr(.beatBoss1).trackingActive = true;
+    state.achievements.getPtr(.beatBoss2).trackingActive = true;
+    state.achievements.getPtr(.beatBoss3).trackingActive = true;
+    state.achievements.getPtr(.beatBoss4).trackingActive = true;
+    state.achievements.getPtr(.beatBoss5).trackingActive = true;
+    state.achievements.getPtr(.beatBoss6).trackingActive = true;
+    state.achievements.getPtr(.beatBoss7).trackingActive = true;
+    state.achievements.getPtr(.beatBoss8).trackingActive = true;
+    state.achievements.getPtr(.beatBoss9).trackingActive = true;
+    state.achievements.getPtr(.beatGame).trackingActive = true;
 
-    if (state.newGamePlus == 1 and !state.achievements.get(.beatGamePlus1).achieved) state.achievements.getPtr(.beatGamePlus1).trackingActive = true;
-    if (state.newGamePlus == 1 and !state.achievements.get(.beatBoss5OnNewGamePlus1).achieved) state.achievements.getPtr(.beatBoss5OnNewGamePlus1).trackingActive = true;
-    if (state.newGamePlus == 2 and !state.achievements.get(.beatGamePlus2).achieved) state.achievements.getPtr(.beatGamePlus2).trackingActive = true;
-    if (state.newGamePlus == 2 and !state.achievements.get(.beatBoss5OnNewGamePlus2).achieved) state.achievements.getPtr(.beatBoss5OnNewGamePlus2).trackingActive = true;
-    if (!state.achievements.get(.beatGameUnder45min).achieved) state.achievements.getPtr(.beatGameUnder45min).trackingActive = true;
-    if (!state.achievements.get(.beatBoss5WithoutSpendingMoney).achieved) state.achievements.getPtr(.beatBoss5WithoutSpendingMoney).trackingActive = true;
-    if (!state.achievements.get(.beatGameWithStartingMovePieces).achieved) state.achievements.getPtr(.beatGameWithStartingMovePieces).trackingActive = true;
-    if (!state.achievements.get(.beatGameWithoutTakingDamage).achieved) state.achievements.getPtr(.beatGameWithoutTakingDamage).trackingActive = true;
+    if (state.newGamePlus == 1) state.achievements.getPtr(.beatGamePlus1).trackingActive = true;
+    if (state.newGamePlus == 1) state.achievements.getPtr(.beatBoss5OnNewGamePlus1).trackingActive = true;
+    if (state.newGamePlus == 2) state.achievements.getPtr(.beatGamePlus2).trackingActive = true;
+    if (state.newGamePlus == 2) state.achievements.getPtr(.beatBoss5OnNewGamePlus2).trackingActive = true;
+    state.achievements.getPtr(.beatGameUnder45min).trackingActive = true;
+    state.achievements.getPtr(.beatBoss5WithoutSpendingMoney).trackingActive = true;
+    state.achievements.getPtr(.beatGameWithStartingMovePieces).trackingActive = true;
+    state.achievements.getPtr(.beatGameWithoutTakingDamage).trackingActive = true;
 }
 
 pub fn stopTrackingAchievmentForThisRun(state: *main.GameState) void {
@@ -100,21 +100,23 @@ pub fn stopTrackingAchievmentForThisRun(state: *main.GameState) void {
 
 pub fn awardAchievement(achievementEnum: AchievementsEnum, state: *main.GameState) !void {
     const achievement = state.achievements.getPtr(achievementEnum);
-    if (!achievement.achieved and achievement.trackingActive) {
-        achievement.achieved = true;
-        steamZig.setAchievement(achievementEnum, state);
-        if (achievement.displayInAchievementsMode) {
-            try state.uxData.achievementGained.append(.{
-                .name = achievement.displayName.?,
-                .displayStartTime = state.gameTime,
-                .imageIndex = achievement.displayImageIndex,
-                .displayCharOnImage = achievement.displayCharOnImage,
-            });
-            if (state.uxData.achievementGainedLastSoundTime + 100 < state.gameTime) {
-                state.uxData.achievementGainedLastSoundTime = state.gameTime;
-                try soundMixerZig.playSound(&state.soundMixer, soundMixerZig.SOUND_BOSS_DEFEATED, 0, 0.8);
+    if (achievement.trackingActive) {
+        if (!achievement.achieved) {
+            achievement.achieved = true;
+            if (achievement.displayInAchievementsMode) {
+                try state.uxData.achievementGained.append(.{
+                    .name = achievement.displayName.?,
+                    .displayStartTime = state.gameTime,
+                    .imageIndex = achievement.displayImageIndex,
+                    .displayCharOnImage = achievement.displayCharOnImage,
+                });
+                if (state.uxData.achievementGainedLastSoundTime + 100 < state.gameTime) {
+                    state.uxData.achievementGainedLastSoundTime = state.gameTime;
+                    try soundMixerZig.playSound(&state.soundMixer, soundMixerZig.SOUND_BOSS_DEFEATED, 0, 0.8);
+                }
             }
         }
+        steamZig.setAchievement(achievementEnum, state);
     }
 }
 

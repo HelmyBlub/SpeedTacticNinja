@@ -1,13 +1,15 @@
 testruns:
 - speed run max
+    - 10rounds level 1 into gold blade
+        - lose 70 seconds
+- test achievement again, because of logic change
 
 Tasks:
-- dynamic steam lib loading
-    - linux
-        test on linux laptop with steam
+- test game start with broken dat files
+- when steam achievment reset but game not, should i get the achievement?
 
 Test Performance:
-    test duration: 56180, gameTime: 2759470 ~ 59,7 (new test run)
+    test duration: 56180, gameTime: 2759470 ~59,7 (new test run)
     test duration: 51900, gameTime: 2759470
     test duration: 59638, gameTime: 2759470 ~45 (with times for best run)
 

@@ -8,6 +8,7 @@ const inputZig = @import("../input.zig");
 const windowSdlZig = @import("../windowSdl.zig");
 const sdl = windowSdlZig.sdl;
 const playerZig = @import("../player.zig");
+const config = @import("config");
 
 pub const SettingsUx = struct {
     menuOpen: bool = false,
@@ -89,6 +90,9 @@ var UI_ELEMENTS_SPEEDRUN_STATS = [_]UiElementData{
 };
 
 var UI_ELEMENTS_INFO = [_]UiElementData{
+    .{
+        .typeData = .{ .text = .{ .label = std.fmt.comptimePrint("Version: 1.0.{s}:{s}", .{ config.gitCommitCount, config.gitHash }) } },
+    },
     .{
         .typeData = .{ .text = .{ .label = "Multiplayer" } },
         .information = &[_][]const u8{
@@ -218,6 +222,7 @@ const UiElementSliderData = struct {
 };
 
 pub fn setupUiLocations(state: *main.GameState) void {
+    std.debug.print("config: {s}\n{s}\n", .{ config.gitCommitCount, config.gitHash });
     const onePixelXInVulkan = state.windowData.onePixelXInVulkan;
     const onePixelYInVulkan = state.windowData.onePixelYInVulkan;
     const settingsMenuUx = &state.uxData.settingsMenuUx;

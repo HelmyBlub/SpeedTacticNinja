@@ -5,9 +5,7 @@ testruns:
 - test achievement again, because of logic change
 
 Tasks:
-- script to prepare steam upload folder
-- version?
-    - display in settings menu
+- check build speeds with options, hopefully not to slow now
 
 
 Test Performance:
@@ -17,7 +15,9 @@ Test Performance:
 
 Next ideas:    
 - steam leaderboard?
+- learn to make music?
 - more automated testing?
+- version?
 - check readme
 
 - steam build without debug mode

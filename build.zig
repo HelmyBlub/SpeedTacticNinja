@@ -16,7 +16,21 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const executableData = addExecutable(b, target, optimize, sdl_lib, zigimg_dependency, false);
+    const commitCount = std.process.Child.run(.{ .allocator = b.allocator, .argv = &.{ "git", "rev-list", "--count", "HEAD" } }) catch null;
+    const gitHash = std.process.Child.run(.{ .allocator = b.allocator, .argv = &.{ "git", "rev-parse", "--short", "HEAD" } }) catch null;
+    // const cmdCommitCount = b.addSystemCommand(&[_][]const u8{
+    //     "git", "rev-list", "--count", "HEAD",
+    // });
+    // const cmdGitHash = b.addSystemCommand(&[_][]const u8{
+    //     "git", "rev-parse", "--short", "HEAD",
+    // });
+    // const commitCount = cmdCommitCount.captureStdOut();
+    // const gitHash = cmdGitHash.captureStdOut();
+    const options = b.addOptions();
+    options.addOption([]const u8, "gitCommitCount", if (commitCount) |count| count.stdout[0 .. count.stdout.len - 1] else "0");
+    options.addOption([]const u8, "gitHash", if (gitHash) |count| count.stdout[0 .. count.stdout.len - 1] else "0");
+
+    const executableData = addExecutable(b, target, optimize, sdl_lib, zigimg_dependency, false, options);
 
     const run_cmd = b.addRunArtifact(executableData.exe);
     run_cmd.step.dependOn(b.getInstallStep());
@@ -37,11 +51,7 @@ pub fn build(b: *std.Build) void {
     test_step.dependOn(&run_unit_tests.step);
 
     compileShared(unit_tests, zigimg_dependency, b);
-    steamSetupStep(
-        b,
-        target,
-        optimize,
-    );
+    steamSetupStep(b, target, optimize, options);
 }
 
 fn compileShared(compile: *std.Build.Step.Compile, zigimg: *std.Build.Dependency, b: *std.Build) void {
@@ -58,7 +68,15 @@ fn compileShared(compile: *std.Build.Step.Compile, zigimg: *std.Build.Dependency
     compile.root_module.addImport("zigimg", zigimg.module("zigimg"));
 }
 
-fn addExecutable(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin.OptimizeMode, sdl_lib: *std.Build.Step.Compile, zigimg: *std.Build.Dependency, skipInstall: bool) struct {
+fn addExecutable(
+    b: *std.Build,
+    target: std.Build.ResolvedTarget,
+    optimize: std.builtin.OptimizeMode,
+    sdl_lib: *std.Build.Step.Compile,
+    zigimg: *std.Build.Dependency,
+    skipInstall: bool,
+    options: *std.Build.Step.Options,
+) struct {
     exe: *std.Build.Step.Compile,
     artifact: *std.Build.Step.InstallArtifact,
 } {
@@ -82,11 +100,13 @@ fn addExecutable(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.
     }
     if (!skipInstall) b.getInstallStep().dependOn(&install_step.step);
     exe.root_module.linkLibrary(sdl_lib);
+    exe.root_module.addOptions("config", options);
+
     compileShared(exe, zigimg, b);
     return .{ .exe = exe, .artifact = install_step };
 }
 
-fn steamSetupStep(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin.OptimizeMode) void {
+fn steamSetupStep(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std.builtin.OptimizeMode, options: *std.Build.Step.Options) void {
     const target2 = if (target.result.os.tag == .windows)
         b.resolveTargetQuery(.{ .cpu_arch = .x86_64, .os_tag = .linux, .abi = .gnu })
     else
@@ -101,7 +121,7 @@ fn steamSetupStep(b: *std.Build, target: std.Build.ResolvedTarget, optimize: std
         .target = target2,
         .optimize = optimize,
     });
-    const executableData2 = addExecutable(b, target2, optimize, sdl_lib, zigimg_dependency, true);
+    const executableData2 = addExecutable(b, target2, optimize, sdl_lib, zigimg_dependency, true, options);
     const steam_step = b.step("steam", "copy files");
     steam_step.dependOn(b.getInstallStep());
     steam_step.dependOn(&executableData2.artifact.step);

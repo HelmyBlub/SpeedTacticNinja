@@ -19,8 +19,8 @@ pub fn build(b: *std.Build) void {
     const commitCount = std.process.Child.run(.{ .allocator = b.allocator, .argv = &.{ "git", "rev-list", "--count", "HEAD" } }) catch null;
     const gitHash = std.process.Child.run(.{ .allocator = b.allocator, .argv = &.{ "git", "rev-parse", "--short", "HEAD" } }) catch null;
     const options = b.addOptions();
-    options.addOption([]const u8, "gitCommitCount", if (commitCount) |count| count.stdout[0 .. count.stdout.len - 1] else "0");
-    options.addOption([]const u8, "gitHash", if (gitHash) |count| count.stdout[0 .. count.stdout.len - 1] else "0");
+    options.addOption([]const u8, "gitCommitCount", if (commitCount) |count| count.stdout[0 .. count.stdout.len - 1] else "-");
+    options.addOption([]const u8, "gitHash", if (gitHash) |count| count.stdout[0 .. count.stdout.len - 1] else "-");
 
     const executableData = addExecutable(b, target, optimize, sdl_lib, zigimg_dependency, false, options);
 
@@ -38,6 +38,8 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
     unit_tests.root_module.linkLibrary(sdl_lib);
+    unit_tests.root_module.addOptions("config", options);
+
     const run_unit_tests = b.addRunArtifact(unit_tests);
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_unit_tests.step);

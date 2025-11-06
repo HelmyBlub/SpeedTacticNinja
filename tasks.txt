@@ -1,9 +1,7 @@
 testruns:
-- speed run max
-    - 10rounds level 1 into gold blade
-        - lose 70 seconds
-- test achievement again, because of logic change
-    - check achievement boss ng+1 did not pop up?
+- eveything achievement from start again
+    - delete all steam achievements
+- play different modes after each other to see they don't influence each other
 
 Tasks:
 

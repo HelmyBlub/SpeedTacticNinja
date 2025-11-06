@@ -1,6 +1,6 @@
 testruns:
-- eveything achievement from start again
-    - delete all steam achievements
+- everything achievement from start
+    - check pra
 - play different modes after each other to see they don't influence each other
 
 Tasks:

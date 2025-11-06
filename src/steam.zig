@@ -9,6 +9,7 @@ var SteamAPI_Shutdown: ?*const fn () callconv(.C) void = null;
 var SteamAPI_SteamUserStats_v013: ?*const fn () callconv(.C) ?*ISteamUserStats = null;
 var SteamAPI_ISteamUserStats_StoreStats: ?*const fn (ptr: ?*ISteamUserStats) callconv(.C) bool = null;
 var SteamAPI_ISteamUserStats_ClearAchievement: ?*const fn (ptr: ?*ISteamUserStats, pchName: [*c]const u8) callconv(.C) bool = null;
+var SteamAPI_ISteamUserStats_ResetAllStats: ?*const fn (ptr: ?*ISteamUserStats, bAchievementsToo: bool) callconv(.C) bool = null;
 var SteamAPI_ISteamUserStats_SetAchievement: ?*const fn (ptr: ?*ISteamUserStats, pchName: [*c]const u8) callconv(.C) bool = null;
 var SteamAPI_ISteamUserStats_GetAchievement: ?*const fn (ptr: ?*ISteamUserStats, pchName: [*c]const u8, pbAchieved: *bool) callconv(.C) bool = null;
 
@@ -109,6 +110,11 @@ fn loadSteamDll() !void {
     SteamAPI_ISteamUserStats_GetAchievement = steamApiLib.?.lookup(
         @TypeOf(SteamAPI_ISteamUserStats_GetAchievement),
         "SteamAPI_ISteamUserStats_GetAchievement",
+    ) orelse return error.LookupFailed;
+
+    SteamAPI_ISteamUserStats_ResetAllStats = steamApiLib.?.lookup(
+        @TypeOf(SteamAPI_ISteamUserStats_ResetAllStats),
+        "SteamAPI_ISteamUserStats_ResetAllStats",
     ) orelse return error.LookupFailed;
 }
 

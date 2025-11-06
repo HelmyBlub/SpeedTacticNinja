@@ -34,7 +34,7 @@ var UI_ELEMENTS_MAIN = [_]UiElementData{
     .{ .typeData = .{ .checkbox = .{ .label = "Fullscreen", .onSetChecked = onCheckboxFullscreen, .checked = true } } },
     .{
         .typeData = .{ .checkbox = .{ .label = "Time Freeze", .onSetChecked = onCheckboxFreezeOnHit, .checked = false } },
-        .information = &[_][]const u8{ "freeze time when taking damage in singleplayer", "Can use this freeze time to determine from what you took damage" },
+        .information = &[_][]const u8{ "freeze time when taking damage in singleplayer", "useful to determine what damaged you" },
     },
     .{ .typeData = .{ .slider = .{ .label = "Volume", .valuePerCent = 1, .onChange = onSliderChangeVolume } } },
     .{ .typeData = .{ .slider = .{ .label = "UI Size", .valuePerCent = 0.5, .onStopHolding = onSliderStopHoldingUxSize } } },

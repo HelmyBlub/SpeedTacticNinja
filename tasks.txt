@@ -5,7 +5,12 @@ testruns:
 - test achievement again, because of logic change
 
 Tasks:
-- check build speeds with options, hopefully not to slow now
+- bug: kunai hits incorrect target 
+    - on down movement is one to the right
+- check equipment for buffs
+- version
+    - check build speeds with options, hopefully not to slow now    
+        - seemed fine
 
 
 Test Performance:
@@ -17,7 +22,6 @@ Next ideas:
 - steam leaderboard?
 - learn to make music?
 - more automated testing?
-- version?
 - check readme
 
 - steam build without debug mode

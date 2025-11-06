@@ -104,6 +104,7 @@ pub const EquipmentShopOptions = struct {
 };
 
 pub const GOLD_WEAPON_BONUS = 1;
+pub const KUNAI_RANGE = 3;
 pub const EQUIPMENT_SHOP_OPTIONS = [_]EquipmentShopOptions{
     .{
         .basePrice = 5,
@@ -203,7 +204,7 @@ pub const EQUIPMENT_SHOP_OPTIONS = [_]EquipmentShopOptions{
         .basePrice = 10,
         .shopDisplayImage = imageZig.IMAGE_ROLLERBLADES,
         .equipment = .{
-            .effectType = .{ .damagePerCent = .{ .factor = 0.8, .effect = .noBackMovement } },
+            .effectType = .{ .damagePerCent = .{ .factor = 1, .effect = .noBackMovement } },
             .imageIndex = imageZig.IMAGE_ROLLERBLADES,
             .slotTypeData = .feet,
         },
@@ -212,7 +213,7 @@ pub const EQUIPMENT_SHOP_OPTIONS = [_]EquipmentShopOptions{
         .basePrice = 10,
         .shopDisplayImage = imageZig.IMAGE_PIRATE_LEG_LEFT,
         .equipment = .{
-            .effectType = .{ .damagePerCent = .{ .factor = 0.8, .effect = .noLeftMovement } },
+            .effectType = .{ .damagePerCent = .{ .factor = 1, .effect = .noLeftMovement } },
             .imageIndex = imageZig.IMAGE_PIRATE_LEG_LEFT,
             .slotTypeData = .feet,
         },
@@ -221,7 +222,7 @@ pub const EQUIPMENT_SHOP_OPTIONS = [_]EquipmentShopOptions{
         .basePrice = 10,
         .shopDisplayImage = imageZig.IMAGE_PIRATE_LEG_RIGHT,
         .equipment = .{
-            .effectType = .{ .damagePerCent = .{ .factor = 0.8, .effect = .noRightMovement } },
+            .effectType = .{ .damagePerCent = .{ .factor = 1, .effect = .noRightMovement } },
             .imageIndex = imageZig.IMAGE_PIRATE_LEG_RIGHT,
             .slotTypeData = .feet,
         },
@@ -257,7 +258,7 @@ pub const EQUIPMENT_SHOP_OPTIONS = [_]EquipmentShopOptions{
         .basePrice = 10,
         .shopDisplayImage = imageZig.IMAGE_KUNAI,
         .equipment = .{
-            .effectType = .{ .damage = .{ .damage = 6, .effect = .kunai } },
+            .effectType = .{ .damage = .{ .damage = 7, .effect = .kunai } },
             .imageIndex = imageZig.IMAGE_KUNAI,
             .slotTypeData = .weapon,
         },

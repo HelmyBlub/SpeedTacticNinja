@@ -7,6 +7,7 @@ const paintVulkanZig = @import("paintVulkan.zig");
 const mapTileZig = @import("../mapTile.zig");
 const imageZig = @import("../image.zig");
 const playerZig = @import("../player.zig");
+const equipmentZig = @import("../equipment.zig");
 
 pub fn setupVertices(state: *main.GameState) void {
     const verticeData = &state.vkState.verticeData;
@@ -198,7 +199,7 @@ fn verticesForChoosenMoveOptionVisualization(player: *playerZig.Player, lines: *
                 }
             }
             if (player.equipment.hasWeaponKunai) {
-                const kunaiRange = 2;
+                const kunaiRange = equipmentZig.KUNAI_RANGE;
                 for (1..kunaiRange + 1) |i| {
                     const fi: f32 = @floatFromInt(i);
                     const gamePosition: main.Position = .{

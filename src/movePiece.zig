@@ -12,6 +12,7 @@ const mapTileZig = @import("mapTile.zig");
 const playerZig = @import("player.zig");
 const windowSdlZig = @import("windowSdl.zig");
 const inputZig = @import("input.zig");
+const equipmentZig = @import("equipment.zig");
 
 pub const MovePiece = struct {
     steps: []MoveStep,
@@ -432,16 +433,17 @@ fn stepAndCheckEnemyHitAndProjectileHitAndTiles(player: *playerZig.Player, stepC
         if (player.equipment.hasWeaponKunai and (currIndex == stepCount or tileType == .wall)) {
             const playerTilePosition = main.gamePositionToTilePosition(player.position);
             const tileDirection = getStepDirectionTile(direction);
+            const addKunaiRange = equipmentZig.KUNAI_RANGE - 1;
             var hitArea: main.TileRectangle = .{
                 .pos = .{
                     .x = playerTilePosition.x + tileDirection.x,
                     .y = playerTilePosition.y + tileDirection.y,
                 },
-                .width = @as(i32, @intCast(@abs(tileDirection.x))) + 1,
-                .height = @as(i32, @intCast(@abs(tileDirection.y))) + 1,
+                .width = @as(i32, @intCast(@abs(tileDirection.x * addKunaiRange))) + 1,
+                .height = @as(i32, @intCast(@abs(tileDirection.y * addKunaiRange))) + 1,
             };
-            if (tileDirection.x < 0) hitArea.pos.x -= 1;
-            if (tileDirection.y < 0) hitArea.pos.y -= 1;
+            if (tileDirection.x < 0) hitArea.pos.x -= addKunaiRange;
+            if (tileDirection.y < 0) hitArea.pos.y -= addKunaiRange;
             if (try checkEnemyHitOnMoveStepWithHitArea(player, direction, hitArea, state)) {
                 try soundMixerZig.playRandomSound(&state.soundMixer, soundMixerZig.SOUND_KUNAI_INDICIES[0..], currIndex * 25, 1);
                 try state.mapObjects.append(.{ .position = player.position, .typeData = .{ .kunai = .{

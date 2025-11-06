@@ -3,14 +3,9 @@ testruns:
     - 10rounds level 1 into gold blade
         - lose 70 seconds
 - test achievement again, because of logic change
+    - check achievement boss ng+1 did not pop up?
 
 Tasks:
-- bug: kunai hits incorrect target 
-    - on down movement is one to the right
-- check equipment for buffs
-- version
-    - check build speeds with options, hopefully not to slow now    
-        - seemed fine
 
 
 Test Performance:
@@ -19,7 +14,6 @@ Test Performance:
     test duration: 59638, gameTime: 2759470 ~45 (with times for best run)
 
 Next ideas:    
-- steam leaderboard?
 - learn to make music?
 - more automated testing?
 - check readme

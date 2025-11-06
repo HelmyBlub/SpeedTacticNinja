@@ -1,18 +1,19 @@
 # Speed Tactic Ninja
 A game made with programming language Zig and Vulkan Graphics API.
 You controll a character to slice through enemies, but are limited in movement by random move pieces.
+![image](./gameImages/libraryHeader.png)
 
-## Install
+# Install
 - install Zig (version 0.14 used, unsure if newer versions work)
 - vulkan developer SDK
 - (optional) steam sdk
 
-## build and run
+# Build
 `zig build run`
 
-## run tests
 `zig build test`
 
+`zig build steam`
 
 ## cross compile 
 - linux build

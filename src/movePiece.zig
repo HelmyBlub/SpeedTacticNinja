@@ -571,6 +571,7 @@ pub fn movePlayerByMovePiece(player: *playerZig.Player, movePieceIndex: usize, d
             player.moveOptions.items[index] = player.moveOptions.items[index + 1];
         }
         player.moveOptions.items[player.moveOptions.items.len - 1] = newOption;
+        if (player.choosenMoveOptionIndex) |index| player.choosenMoveOptionVisualizationOverlapping = choosenMovePieceVisualizationVulkanZig.isChoosenPieceVisualizationOverlapping(player.moveOptions.items[index]);
     }
     player.lastMoveDirection = directionInput;
     try soundMixerZig.playRandomSound(&state.soundMixer, soundMixerZig.SOUND_NINJA_MOVE_INDICIES[0..], 0, 1);

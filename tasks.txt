@@ -1,9 +1,10 @@
 testruns:
-- everything achievement from start
-    - check pra
-- play different modes after each other to see they don't influence each other
+- play over steam
+    - ng+2
 
 Tasks:
+- bug: move piece highlithing alway active
+    - had eye patch as item
 
 
 Test Performance:

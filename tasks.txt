@@ -1,10 +1,6 @@
 testruns:
-- play over steam
-    - ng+2
 
 Tasks:
-- bug: move piece highlithing alway active
-    - had eye patch as item
 
 
 Test Performance:

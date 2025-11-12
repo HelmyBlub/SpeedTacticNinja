@@ -1,17 +1,30 @@
 testruns:
 
 Tasks:
-
+- put into game credits?
+    - zig
+    - vulkan/volk
+    - minimp3
+    - sdl3
+    - zigimg
+- learn to make music?
+    - can i make instrument with my own voice?
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~59,7 (new test run)
     test duration: 51900, gameTime: 2759470
     test duration: 59638, gameTime: 2759470 ~45 (with times for best run)
+    test duration: 73844, gameTime: 2759470, ~37 (don't know why speed loss, did use VM a lot more)
 
-Next ideas:    
+Next ideas:   
 - learn to make music?
+    - can i make instrument with my own voice?
+    - i am not good at it?
+    - seems to be a lot of work?
 - more automated testing?
+    - 
 - check readme
+
 
 - steam build without debug mode
     - check steam active

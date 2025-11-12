@@ -48,6 +48,13 @@ pub const CREDITS_TEXTS = [_][]const u8{
     "Everything done by:",
     "Helmi Blub",
     "",
+    "Used Technologies:",
+    "Programming Language: Zig",
+    "Graphics: Vulkan API",
+    "Libraries:",
+    "SDL3 for OS Stuff",
+    "minimp3 for loading mp3 files",
+    "zigimg for loading png files",
     "Thanks for playing",
 };
 

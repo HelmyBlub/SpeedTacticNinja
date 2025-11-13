@@ -1,14 +1,25 @@
 testruns:
 
 Tasks:
-- put into game credits?
-    - zig
-    - vulkan/volk
-    - minimp3
-    - sdl3
-    - zigimg
+- bug: multiplayer walls + choosen move piece visualization
 - learn to make music?
     - can i make instrument with my own voice?
+        - LMMS + polyphone + audacity
+        - learning:
+            - make "A" sounds
+                - hard to learn how to control my voice for different notes
+                - https://pitchreader.com/
+                    - noise filtering or gain control is messung up readings
+            - try to make for 2 octaves (find my range)
+            - make soundFont
+            - try soundFont with LMMS
+            
+        - problem:
+            - automatic gain controll bad for constant sound which i need
+                - quiter sounds need a lot of boost which have a lot of static noise
+            - hard to make my voice recordings match frequency/notes
+            - loop for longer notes is not working so well
+            - if i use one voice recording the notes match but it does not sound like my voice so mutch for higher note changes
 
 Test Performance:
     test duration: 56180, gameTime: 2759470 ~59,7 (new test run)

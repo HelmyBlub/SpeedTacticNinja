@@ -77,18 +77,18 @@ fn verticesForChoosenMoveOptionVisualization(player: *playerZig.Player, lines: *
                     .y = gamePositionWithCameraOffset.y + moveY,
                 };
                 if (stepCount + 1 < moveStep.stepCount) {
-                    const afterNextPosition: main.Position = .{
-                        .x = nextPosition.x + moveX,
-                        .y = nextPosition.y + moveY,
+                    const afterNextGamePosition: main.Position = .{
+                        .x = nextPosition.x + moveX + state.camera.position.x,
+                        .y = nextPosition.y + moveY + state.camera.position.y,
                     };
-                    const afterTilePosition = main.gamePositionToTilePosition(afterNextPosition);
-                    const afterTileType = mapTileZig.getMapTilePositionType(afterTilePosition, &state.mapData);
+                    const afterTileGamePosition = main.gamePositionToTilePosition(afterNextGamePosition);
+                    const afterTileType = mapTileZig.getMapTilePositionType(afterTileGamePosition, &state.mapData);
                     if (afterTileType == .wall) {
                         stepCount = moveStep.stepCount - 1;
                     }
                 }
-                const tilePosition = main.gamePositionToTilePosition(nextPosition);
-                const tileType = mapTileZig.getMapTilePositionType(tilePosition, &state.mapData);
+                const tileGamePosition = main.gamePositionToTilePosition(.{ .x = nextPosition.x + state.camera.position.x, .y = nextPosition.y + state.camera.position.y });
+                const tileType = mapTileZig.getMapTilePositionType(tileGamePosition, &state.mapData);
                 if (tileType != .wall) {
                     gamePositionWithCameraOffset = nextPosition;
                 }

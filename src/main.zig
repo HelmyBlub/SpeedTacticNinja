@@ -55,6 +55,7 @@ pub const CREDITS_TEXTS = [_][]const u8{
     "SDL3 for OS Stuff",
     "minimp3 for loading mp3 files",
     "zigimg for loading png files",
+    "",
     "Thanks for playing",
 };
 

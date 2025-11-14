@@ -1,7 +1,6 @@
 testruns:
 
 Tasks:
-- bug: multiplayer walls + choosen move piece visualization
 - learn to make music?
     - can i make instrument with my own voice?
         - LMMS + polyphone + audacity

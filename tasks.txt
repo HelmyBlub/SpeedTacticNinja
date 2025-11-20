@@ -1,17 +1,31 @@
 testruns:
 
 Tasks:
+- gamepad: digital pad for movement
+    - bug: menu hold button resets?
 - learn to make music?
+    - idea: copy music by ear
+        - feels like this trains what i need to better understand music
+        - next difficulty: try with my soundfont
+    - watch some music making videos
+        - how other people use tools to create music
+        - how other people create it step by step
     - can i make instrument with my own voice?
         - LMMS + polyphone + audacity
         - learning:
-            - make "A" sounds
-                - hard to learn how to control my voice for different notes
-                - https://pitchreader.com/
-                    - noise filtering or gain control is messung up readings
-            - try to make for 2 octaves (find my range)
-            - make soundFont
-            - try soundFont with LMMS
+            - idea1:
+                - make different sounds
+                - one sound per instrument
+                - try to make music with it
+            - idea2:
+                - make "A" sounds
+                    - hard to learn how to control my voice for different notes
+                    - https://pitchreader.com/
+                        - noise filtering or gain control is messung up readings
+                - try to make for 2 octaves (find my range)
+                - make soundFont
+                - try soundFont with LMMS
+
             
         - problem:
             - automatic gain controll bad for constant sound which i need

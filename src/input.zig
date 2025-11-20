@@ -56,9 +56,25 @@ const KeyboardKeyBind = struct {
     sdlKeyCode: c_int,
 };
 
+const GamepadActionBind = struct {
+    action: PlayerAction,
+    buttonId: u8,
+};
+
 pub const ButtonDisplay = struct {
     text: []const u8,
     device: InputDevice,
+};
+
+const GAMEPAD_XBOX_MAPPING = [_]GamepadActionBind{
+    .{ .action = .moveDown, .buttonId = 12 },
+    .{ .action = .moveUp, .buttonId = 11 },
+    .{ .action = .moveLeft, .buttonId = 13 },
+    .{ .action = .moveRight, .buttonId = 14 },
+    .{ .action = .pieceSelect1, .buttonId = 0 },
+    .{ .action = .pieceSelect2, .buttonId = 1 },
+    .{ .action = .pieceSelect3, .buttonId = 2 },
+    .{ .action = .pauseGame, .buttonId = 6 },
 };
 
 const KEYBOARD_MAPPING_1 = [_]KeyboardKeyBind{
@@ -329,20 +345,17 @@ fn handlePlayerGamepadInput(event: sdl.SDL_Event, player: *playerZig.Player, gam
         },
         sdl.SDL_EVENT_GAMEPAD_BUTTON_DOWN => {
             if (gamepadId == null) player.inputData.lastInputDevice = .{ .gamepad = event.gdevice.which };
-            if (event.gbutton.button == 0) {
-                try handlePlayerAction(.pieceSelect1, player, state);
-            } else if (event.gbutton.button == 1) {
-                try handlePlayerAction(.pieceSelect2, player, state);
-            } else if (event.gbutton.button == 2) {
-                try handlePlayerAction(.pieceSelect3, player, state);
-            } else if (event.gbutton.button == 6) {
-                try handlePlayerAction(.pauseGame, player, state);
-                if ((!state.paused or !state.gameOver) and state.uxData.settingsMenuUx.menuOpen) {
-                    state.uxData.settingsMenuUx.gamePadSelectIndex = null;
-                    state.uxData.settingsMenuUx.menuOpen = false;
+            for (GAMEPAD_XBOX_MAPPING) |mapping| {
+                if (mapping.buttonId == event.gbutton.button) {
+                    try handlePlayerAction(mapping.action, player, state);
+                    if (mapping.action == .pauseGame) {
+                        if ((!state.paused or !state.gameOver) and state.uxData.settingsMenuUx.menuOpen) {
+                            state.uxData.settingsMenuUx.gamePadSelectIndex = null;
+                            state.uxData.settingsMenuUx.menuOpen = false;
+                        }
+                        break;
+                    }
                 }
-            } else {
-                std.debug.print("gamepadeButtonPress: {}\n", .{event.gbutton.button});
             }
             if (gamepadId != null) {
                 player.inputData.holdingKeySinceForLeave = std.time.milliTimestamp();
@@ -351,9 +364,22 @@ fn handlePlayerGamepadInput(event: sdl.SDL_Event, player: *playerZig.Player, gam
         sdl.SDL_EVENT_GAMEPAD_BUTTON_UP => {
             player.inputData.holdingKeySinceForLeave = null;
             if (state.gameOver or state.paused) {
-                if (event.gbutton.button == 0) state.uxData.continueButtonHoldStart = null;
-                if (event.gbutton.button == 1) state.uxData.restartButtonHoldStart = null;
-                if (event.gbutton.button == 2) state.uxData.quitButtonHoldStart = null;
+                for (GAMEPAD_XBOX_MAPPING) |mapping| {
+                    if (mapping.buttonId == event.gbutton.button) {
+                        if (mapping.action == .pieceSelect1) {
+                            state.uxData.continueButtonHoldStart = null;
+                            break;
+                        }
+                        if (mapping.action == .pieceSelect2) {
+                            state.uxData.restartButtonHoldStart = null;
+                            break;
+                        }
+                        if (mapping.action == .pieceSelect3) {
+                            state.uxData.quitButtonHoldStart = null;
+                            break;
+                        }
+                    }
+                }
             }
         },
         else => {},

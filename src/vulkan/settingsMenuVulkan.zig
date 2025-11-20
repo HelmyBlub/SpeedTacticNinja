@@ -580,7 +580,14 @@ pub fn handleGamepadSettingsMenuInput(event: sdl.SDL_Event, player: *playerZig.P
     const chooseTab = 0;
     const deadzoneLimit = 15000;
     const playerInputIsInDeadZone = player.inputData.axis0DeadZone and player.inputData.axis1DeadZone;
-    if (settingsMenuUx.gamePadSelectIndex) |gamePadSelectIndex| {
+    if (!state.uxData.settingsMenuUx.menuOpen) {
+        if (event.type == sdl.SDL_EVENT_GAMEPAD_BUTTON_DOWN and event.gbutton.button == 3) {
+            if (!settingsMenuUx.menuOpen) {
+                resetMenu(state);
+                settingsMenuUx.menuOpen = true;
+            }
+        }
+    } else if (settingsMenuUx.gamePadSelectIndex) |gamePadSelectIndex| {
         const isCloseMenuInput = event.type == sdl.SDL_EVENT_GAMEPAD_BUTTON_DOWN and event.gbutton.button == 3;
         if (isCloseMenuInput) {
             settingsMenuUx.gamePadSelectIndex = null;
@@ -675,11 +682,22 @@ pub fn handleGamepadSettingsMenuInput(event: sdl.SDL_Event, player: *playerZig.P
                 .text => {},
             }
         }
-    } else {
-        if (event.type == sdl.SDL_EVENT_GAMEPAD_BUTTON_DOWN and event.gbutton.button == 3) {
-            settingsMenuUx.gamePadSelectIndex = 0;
-            settingsMenuUx.hoverTabIndex = 0;
-            if (!settingsMenuUx.menuOpen) settingsMenuUx.menuOpen = true;
+    }
+}
+
+pub fn resetMenu(state: *main.GameState) void {
+    const settingsMenuUx = &state.uxData.settingsMenuUx;
+    const currentTab = &settingsMenuUx.uiTabs[settingsMenuUx.activeTabIndex];
+    settingsMenuUx.gamePadSelectIndex = 0;
+    settingsMenuUx.hoverTabIndex = 0;
+    for (currentTab.uiElements) |*element| {
+        element.hovering = false;
+        element.informationHover = false;
+        switch (element.typeData) {
+            .holdButton => |*data| {
+                data.holdStartTime = null;
+            },
+            else => {},
         }
     }
 }
@@ -859,6 +877,7 @@ pub fn setupVertices(state: *main.GameState) !void {
 
 ///returns true if mouse hovering menu
 pub fn verticesForHoverInformation(state: *main.GameState) !bool {
+    if (!state.uxData.settingsMenuUx.menuOpen) return false;
     const currentTab = &state.uxData.settingsMenuUx.uiTabs[state.uxData.settingsMenuUx.activeTabIndex];
     const menuRec = currentTab.contentRec;
     for (currentTab.uiElements) |*element| {

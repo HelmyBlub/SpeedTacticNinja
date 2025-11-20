@@ -16,11 +16,11 @@ pub fn setupVertices(state: *main.GameState) !void {
     try verticesForLevelRoundNewGamePlus(state);
     try verticesForPvP(state);
     try verticesForTimeFreeze(state);
+    verticesForBossAcedAndFreeContinue(state);
+    try verticesForFinished(state);
     try verticesForGameOverOrPaused(state);
     try verticesForLeaveJoinInfo(state);
-    verticesForBossAcedAndFreeContinue(state);
     verticsForTutorial(state);
-    try verticesForFinished(state);
     try verticesForAchievementGained(state);
 }
 

@@ -1,12 +1,17 @@
 testruns:
 
 Tasks:
-- gamepad: digital pad for movement
-    - bug: menu hold button resets?
+- practice restart change to level--? controller keys?
+- play one last time
+- upload to steam release build on thursday
+    - play on friday over steam
+    - reset everything and try if it works
 - learn to make music?
     - idea: copy music by ear
+        - https://musescore.com/sheetmusic/beginner/piano?srsltid=AfmBOooyB6JV-aS7zYIk2tKbfiRYCwfCXvsPdHDk-cBMQWjSvYMjpxc4
         - feels like this trains what i need to better understand music
         - next difficulty: try with my soundfont
+    - idea2: try to copy music which i remember in my mind
     - watch some music making videos
         - how other people use tools to create music
         - how other people create it step by step
@@ -50,7 +55,9 @@ Next ideas:
 - check readme
 
 
-- steam build without debug mode
+- steam build
+    - without debug mode
+        - check safe build
     - check steam active
     - check validation layer disabled
     - check debug keys not working

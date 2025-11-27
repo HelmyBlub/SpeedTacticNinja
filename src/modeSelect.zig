@@ -477,7 +477,7 @@ fn verticesForPracticeMode(state: *main.GameState) void {
 
     const key4Pos: main.Position = .{ .x = basePosition.x, .y = basePosition.y + onePixelYInVulkan * fontSize };
     paintVulkanZig.verticesForComplexSpriteVulkan(key4Pos, imageZig.IMAGE_KEY_BLANK, fontSize, fontSize, 1, 0, false, false, state);
-    _ = fontVulkanZig.paintText("F4  Restart", .{
+    _ = fontVulkanZig.paintText("F4  Last Level", .{
         .x = key4Pos.x - onePixelXInVulkan * fontSize / 4 - onePixelXInVulkan * 2,
         .y = key4Pos.y - onePixelYInVulkan * fontSize / 4,
     }, fontSize / 2, .{ 1, 1, 1, 1 }, state);
@@ -501,6 +501,8 @@ pub fn handlePracticeModeKeys(event: sdl.SDL_Event, state: *main.GameState) !voi
             try main.startNextLevel(state);
         }
     } else if (event.key.scancode == sdl.SDL_SCANCODE_F4) {
-        try main.runStart(state, state.newGamePlus);
+        state.level -|= 1;
+        if (state.gamePhase != .shopping) state.level -|= 1;
+        try main.startNextLevel(state);
     }
 }

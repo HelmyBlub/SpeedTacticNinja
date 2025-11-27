@@ -3,8 +3,8 @@ const builtin = @import("builtin");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
-    const optimize: std.builtin.OptimizeMode = b.standardOptimizeOption(.{});
-    // const optimize: std.builtin.OptimizeMode = .ReleaseFast;
+    // const optimize: std.builtin.OptimizeMode = b.standardOptimizeOption(.{});
+    const optimize: std.builtin.OptimizeMode = .ReleaseSafe;
 
     const sdl_dep = b.dependency("sdl", .{
         .target = target,

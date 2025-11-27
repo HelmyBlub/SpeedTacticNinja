@@ -1,11 +1,10 @@
 testruns:
 
 Tasks:
-- practice restart change to level--? controller keys?
-- play one last time
 - upload to steam release build on thursday
     - play on friday over steam
     - reset everything and try if it works
+    - play on laptop linux version
 - learn to make music?
     - idea: copy music by ear
         - https://musescore.com/sheetmusic/beginner/piano?srsltid=AfmBOooyB6JV-aS7zYIk2tKbfiRYCwfCXvsPdHDk-cBMQWjSvYMjpxc4

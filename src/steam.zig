@@ -13,7 +13,7 @@ var SteamAPI_ISteamUserStats_ResetAllStats: ?*const fn (ptr: ?*ISteamUserStats, 
 var SteamAPI_ISteamUserStats_SetAchievement: ?*const fn (ptr: ?*ISteamUserStats, pchName: [*c]const u8) callconv(.C) bool = null;
 var SteamAPI_ISteamUserStats_GetAchievement: ?*const fn (ptr: ?*ISteamUserStats, pchName: [*c]const u8, pbAchieved: *bool) callconv(.C) bool = null;
 
-const ENABLED: bool = false;
+const ENABLED: bool = true;
 pub const SteamData = struct {
     earliestNextStoreStats: i64,
     achievementToStore: bool = false,

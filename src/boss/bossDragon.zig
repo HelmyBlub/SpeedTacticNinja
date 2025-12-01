@@ -84,6 +84,7 @@ const TransitionFlyingData = struct {
     cameraDone: bool = false,
     dragonFlyPositionIndex: usize = 0,
     fireSpawnTile: ?i32 = null,
+    targetPlayerIndex: ?usize = null,
 };
 
 pub const BossDragonData = struct {
@@ -556,6 +557,7 @@ fn tickTransitionFlyingPhase(flyingData: *TransitionFlyingData, boss: *bossZig.B
         if (flyingData.moveCameraToDefaultTime == null) {
             if (flyingData.keepCameraUntilTime == null) {
                 flyingData.keepCameraUntilTime = state.gameTime + FLYING_TRANSITION_CAMERA_WAIT_TIME;
+                flyingData.targetPlayerIndex = playerZig.getRandomAlivePlayerIndex(state);
                 state.camera.position.y = FLYING_TRANSITION_CAMERA_OFFSET_Y;
                 data.inAirHeight -= FLYING_TRANSITION_CAMERA_OFFSET_Y;
                 for (state.mapData.paintData.backClouds[0..]) |*cloud| {
@@ -591,8 +593,7 @@ fn tickTransitionFlyingPhase(flyingData: *TransitionFlyingData, boss: *bossZig.B
                 data.inAirHeight -= DEFAULT_FLYING_SPEED * @as(f32, @floatFromInt(passedTime));
             }
             var currentTargetPos = FLYING_TRANSITION_DRAGON_POSITIONS[flyingData.dragonFlyPositionIndex];
-            const optRandomPlayerIndex = playerZig.getRandomAlivePlayerIndex(state);
-            if (optRandomPlayerIndex) |randomPlayerIndex| {
+            if (flyingData.targetPlayerIndex) |randomPlayerIndex| {
                 switch (flyingData.dragonFlyPositionIndex) {
                     0 => {
                         const fMapRadius = @as(f32, @floatFromInt(state.mapData.tileRadiusHeight * main.TILESIZE));
@@ -608,6 +609,8 @@ fn tickTransitionFlyingPhase(flyingData: *TransitionFlyingData, boss: *bossZig.B
                     3 => currentTargetPos.x = boss.position.x,
                     else => {},
                 }
+            } else {
+                flyingData.targetPlayerIndex = playerZig.getRandomAlivePlayerIndex(state);
             }
 
             if (moveBossTick(boss, currentTargetPos, passedTime, DEFAULT_FLYING_SPEED)) {

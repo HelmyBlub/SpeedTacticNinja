@@ -324,6 +324,7 @@ pub fn startShoppingPhase(state: *main.GameState, wentBackwardsToShop: bool) !vo
         if (player.equipment.equipmentSlotsData.feet) |*feet| feet.returnMoney = 0;
         if (player.equipment.equipmentSlotsData.weapon) |*weapon| weapon.returnMoney = 0;
         if (!state.gameOver and player.isDead) player.isDead = false;
+        player.animateData.ears.lastUpdateTime = state.gameTime;
         movePlayerToHisShopPosition(player);
         try movePieceZig.resetPieces(player, true, state);
     }

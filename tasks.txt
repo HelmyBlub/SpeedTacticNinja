@@ -5,6 +5,7 @@ Tasks:
 - deploay to steam
 - release on steam
     - reset everything and play through it all
+- automatic test is broken on endboss
 - learn to make music?
     - idea: copy music by ear
         - https://musescore.com/sheetmusic/beginner/piano?srsltid=AfmBOooyB6JV-aS7zYIk2tKbfiRYCwfCXvsPdHDk-cBMQWjSvYMjpxc4

@@ -255,6 +255,7 @@ fn startMazeMode(state: *main.GameState) !void {
     state.gameOver = false;
     state.level = 1;
     state.newGamePlus = 0;
+    state.verifyMapData.lastCheckTime = 0;
     for (state.players.items) |*player| {
         try playerZig.resetPlayer(player, state);
     }

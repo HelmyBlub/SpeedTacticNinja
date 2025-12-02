@@ -1,6 +1,9 @@
 testruns:
 
 Tasks:
+- bug: maze mode created unsolveable pattern
+    - could not reproduce yet
+    - seems to be more difficult case
 - check not debug build and other things
 - deploay to steam
 - release on steam
